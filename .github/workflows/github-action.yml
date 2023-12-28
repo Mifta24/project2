@@ -1,0 +1,19 @@
+name: GitHub Actions to publish docker image
+run-name: ${{ github.actor }} in Actions 🚀
+on:
+  push:
+    branches:
+      - main
+              
+jobs:
+  Build-and-push-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Build and taq docker image
+        run: |
+          docker build -t ${{secrets.USERNAME}}/action-project2:v1 -f Dockerfile .
+
+      - name: push to DockerHub
+        run: docker login -u ${{secrets.USERNAME}} -p ${{secrets.ACCESS_TOKEN}} && docker push ${{secrets.USERNAME}}/action-project2:v1
